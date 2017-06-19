@@ -5,6 +5,7 @@
       <df name="src">
         <in>Viiva.cpp</in>
         <in>Viiva.h</in>
+        <in>dClock.h</in>
         <in>main.cpp</in>
         <in>ofApp.cpp</in>
         <in>ofxBlur.cpp</in>
@@ -115,6 +116,8 @@
       <item path="src/Viiva.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Viiva.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/dClock.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="11">
         <ccTool flags="0">

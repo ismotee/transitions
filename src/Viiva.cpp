@@ -2,14 +2,17 @@
 
 void Viiva::setup() {
     sample = 0;
+    moodi = viivaValmis;
 }
 
 void Viiva::update() {
+    viivaKasvoi = false;
     valitseMoodi();
     switch (moodi) {
         case uusiViiva:
             tallennaViiva();
             kalibroi();
+            laskeOtannanOminaisuudet();
             break;
         case piirtaa:
             tallennaViiva();
@@ -17,12 +20,16 @@ void Viiva::update() {
             //vertaa();
             break;
         case viivaKesken:
-
+            otannanOminaisuudet.nollaa();
+            nopeudet.clear();
             break;
         case viivaValmis:
             // tää on vähän hassu ratkaisu
             pLine.clear();
             nopeudet.clear();
+            otannanOminaisuudet.nollaa();
+            kalibrointi.nollaa();
+            verratut.nollaa();
             sample = 0;
             tauko = 0;
             break;
@@ -31,7 +38,7 @@ void Viiva::update() {
 
 void Viiva::valitseMoodi() {
     if (mouse.mouseState.z) {
-        if (sample < 100)
+        if (sample < 200)
             moodi = uusiViiva;
         else
             moodi = piirtaa;
@@ -41,7 +48,7 @@ void Viiva::valitseMoodi() {
         if (moodi == uusiViiva || moodi == piirtaa) {
             moodi = viivaKesken;
             tauko = 0;
-        } else if (tauko < 150)
+        } else if (tauko < 400)
             tauko++;
         else
             moodi = viivaValmis;
@@ -80,15 +87,16 @@ void Viiva::kalibroi() {
 }
 
 void Viiva::tallennaViiva() {
+    viivaKasvoi = true;
     pLine.addVertex(mouse.mouseState.x, mouse.mouseState.y);
     otanta.push_back(mouse.mouseState);
 
     if (otanta.size() == 51)
         otanta.erase(otanta.begin());
 
-    if (pLine.size() == 1) {
+    if (pLine.size() == 1 || nopeudet.size() < 2) {
         nopeudet.push_back(0);
-    } else {
+    } else if(nopeudet.size() >= 2 ){
         ofVec2f vec = pLine[pLine.size() - 1] - pLine[pLine.size() - 2];
         nopeudet.push_back(vec.lengthSquared());
         if (nopeudet.size() == 51)
@@ -113,7 +121,8 @@ void Viiva::laskeOtannanOminaisuudet() {
         for (float nopeus : nopeudet)
             otannanOminaisuudet.nopeudenKa += nopeus;
 
-        otannanOminaisuudet.nopeudenKa /= nopeudet.size();
+        if (nopeudet.size() != 0)
+            otannanOminaisuudet.nopeudenKa /= nopeudet.size();
         otannanOminaisuudet.maksimiNopeus = 0;
 
         for (int i = 0; i < nopeudet.size(); i++) {

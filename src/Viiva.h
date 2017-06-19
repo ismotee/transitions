@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "dClock.h"
 
 enum ViivanMoodi {uusiViiva, piirtaa, viivaKesken,viivaValmis};
 
@@ -23,7 +24,7 @@ struct viivanOminaisuudet {
     float kulmanKh;
     float pintaala;
     
-    void nollaa() {nopeudenKa = nopeudenKh = kulmanKa = kulmanKh = 0;}
+    void nollaa() {nopeudenKa = 0; nopeudenKh = 0; kulmanKa = 0; kulmanKh = 0;pintaala = 0;maksimiNopeus = 0;}
 };
 
 class Viiva {
@@ -31,7 +32,9 @@ public:
     ViivanMoodi moodi;
     hiiri mouse;
     int sample,tauko;
-
+    bool viivaKasvoi;
+    
+    
     ofPolyline pLine;
     std::vector<ofPoint> otanta;
     std::vector<float> nopeudet;

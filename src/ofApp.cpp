@@ -6,6 +6,7 @@ void ofApp::setup() {
     ofBackground(ofColor::white);
     col = ofColor::white;
     ofHideCursor();
+    Viiva::setup();
     piirtopiirto::setup();
 }
 
@@ -13,7 +14,7 @@ void ofApp::setup() {
 
 void ofApp::update() {
 
-    piirtopiirto::update();
+   // piirtopiirto::update();
 
 }
 //--------------------------------------------------------------
@@ -39,15 +40,19 @@ void ofApp::keyReleased(int key) {
 //--------------------------------------------------------------
 
 void ofApp::mouseMoved(int x, int y) {
+    lock();
     mouse.moved(x, y);
+    unlock();
 }
 
 //--------------------------------------------------------------
 
 void ofApp::mouseDragged(int x, int y, int button) {
     //mousePos.set(x, y);
+    lock();
+    mouse.click = false;
     mouse.moved(x, y);
-
+    unlock();
 }
 
 //--------------------------------------------------------------
@@ -56,7 +61,10 @@ void ofApp::mousePressed(int x, int y, int button) {
     //mousePos.set(x, y);
     //mPressed = true;
     //pLine.clear();
+    lock();
+    mouse.click = true;
     piirtopiirto::pressed(x, y);
+    unlock();
 }
 
 //--------------------------------------------------------------
@@ -66,8 +74,9 @@ void ofApp::mouseReleased(int x, int y, int button) {
     //mPressed = false;
 
     //pLine.simplify(0.8);
+    lock();
     mouse.released(x, y);
-
+    unlock();
 
 }
 

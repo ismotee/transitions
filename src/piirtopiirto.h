@@ -2,6 +2,7 @@
 #include "variPiirto.h"
 #include "Viiva.h"
 #include "ofMain.h"
+#include <deque>
 
 struct poly {
     bool draw;
@@ -15,12 +16,14 @@ struct poly {
 
 };
 
-class piirtopiirto : public Viiva {
+class piirtopiirto : public Viiva, public ofThread {
 public:
     int timer;
     float paksuus;
-    std::vector<poly> polyViiva;
-    bool alaPiirraSeuraavaa;
+    dClock kello;
+    
+    std::deque<poly> polyViiva;
+    int alaPiirraSeuraavaa;
 
     ofColor currentColor, startColor, aimColor;
     float currentHue;
@@ -32,7 +35,7 @@ public:
 
     bool showData;
 
-
+    void threadedFunction();
     void setup();
     void update();
     void draw();

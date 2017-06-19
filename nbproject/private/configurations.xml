@@ -17,6 +17,7 @@
       <df name="src">
         <in>Viiva.cpp</in>
         <in>Viiva.h</in>
+        <in>dClock.h</in>
         <in>main.cpp</in>
         <in>ofApp.cpp</in>
         <in>ofApp.h</in>
