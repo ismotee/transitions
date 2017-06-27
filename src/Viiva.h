@@ -33,6 +33,7 @@ public:
     hiiri mouse;
     int sample,tauko;
     bool viivaKasvoi;
+    dClock viivaKello;
     
     
     ofPolyline pLine;

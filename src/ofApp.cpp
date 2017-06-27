@@ -4,24 +4,33 @@
 
 void ofApp::setup() {
     ofBackground(ofColor::white);
-    col = ofColor::white;
     ofHideCursor();
     Viiva::setup();
     piirtopiirto::setup();
+    sender.setup("127.0.0.1", 9998);
+    clk.reset();
 }
 
 //--------------------------------------------------------------
 
 void ofApp::update() {
 
-   // piirtopiirto::update();
-
+    // piirtopiirto::update();
+    if (mouse.mouseState.z && clk.get() > 0.1) {
+        lock();
+        ofxOscMessage msg;
+        msg.setAddress("/nopeus");
+        msg.addFloatArg(ylitys);
+        sender.sendMessage(msg, false);
+        unlock();
+        clk.reset();
+    }
 }
 //--------------------------------------------------------------
 
 void ofApp::draw() {
     piirtopiirto::draw();
-    
+
 }
 
 //--------------------------------------------------------------
@@ -101,7 +110,6 @@ void ofApp::windowResized(int w, int h) {
 //--------------------------------------------------------------
 
 void ofApp::gotMessage(ofMessage msg) {
-
 }
 
 //--------------------------------------------------------------

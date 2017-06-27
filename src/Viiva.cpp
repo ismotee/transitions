@@ -3,42 +3,46 @@
 void Viiva::setup() {
     sample = 0;
     moodi = viivaValmis;
+    viivaKello.reset();
 }
 
 void Viiva::update() {
-    viivaKasvoi = false;
-    valitseMoodi();
-    switch (moodi) {
-        case uusiViiva:
-            tallennaViiva();
-            kalibroi();
-            laskeOtannanOminaisuudet();
-            break;
-        case piirtaa:
-            tallennaViiva();
-            laskeOtannanOminaisuudet();
-            //vertaa();
-            break;
-        case viivaKesken:
-            otannanOminaisuudet.nollaa();
-            nopeudet.clear();
-            break;
-        case viivaValmis:
-            // tää on vähän hassu ratkaisu
-            pLine.clear();
-            nopeudet.clear();
-            otannanOminaisuudet.nollaa();
-            kalibrointi.nollaa();
-            verratut.nollaa();
-            sample = 0;
-            tauko = 0;
-            break;
+    if (viivaKello.get() > 0.001) {
+        viivaKasvoi = false;
+        valitseMoodi();
+        switch (moodi) {
+            case uusiViiva:
+                tallennaViiva();
+                kalibroi();
+                laskeOtannanOminaisuudet();
+                break;
+            case piirtaa:
+                tallennaViiva();
+                laskeOtannanOminaisuudet();
+                //vertaa();
+                break;
+            case viivaKesken:
+                otannanOminaisuudet.nollaa();
+                nopeudet.clear();
+                break;
+            case viivaValmis:
+                // tää on vähän hassu ratkaisu
+                pLine.clear();
+                nopeudet.clear();
+                otannanOminaisuudet.nollaa();
+                kalibrointi.nollaa();
+                verratut.nollaa();
+                sample = 0;
+                tauko = 0;
+                break;
+        }
+        viivaKello.reset();
     }
 }
 
 void Viiva::valitseMoodi() {
     if (mouse.mouseState.z) {
-        if (sample < 200)
+        if (sample < 300)
             moodi = uusiViiva;
         else
             moodi = piirtaa;
@@ -96,7 +100,7 @@ void Viiva::tallennaViiva() {
 
     if (pLine.size() == 1 || nopeudet.size() < 2) {
         nopeudet.push_back(0);
-    } else if(nopeudet.size() >= 2 ){
+    } else if (nopeudet.size() >= 2) {
         ofVec2f vec = pLine[pLine.size() - 1] - pLine[pLine.size() - 2];
         nopeudet.push_back(vec.lengthSquared());
         if (nopeudet.size() == 51)

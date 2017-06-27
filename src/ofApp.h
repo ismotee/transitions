@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "piirtopiirto.h"
+#include "ofxOsc.h"
 
 class ofApp : public ofBaseApp, public piirtopiirto{
 	public:
@@ -20,11 +21,8 @@ class ofApp : public ofBaseApp, public piirtopiirto{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-                
-                ofPolyline pLine;
-                ofPath path;
-                ofColor col,aimCol;
-                ofPoint mousePos;
-                bool mPressed;
-                float angle;
+               
+                ofxOscReceiver receiver;
+                ofxOscSender sender;
+                dClock clk;
 };

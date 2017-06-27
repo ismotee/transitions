@@ -21,6 +21,7 @@ public:
     int timer;
     float paksuus;
     dClock kello;
+    float ylitys;
     
     std::deque<poly> polyViiva;
     int alaPiirraSeuraavaa;
@@ -37,7 +38,6 @@ public:
 
     void threadedFunction();
     void setup();
-    void update();
     void draw();
 
     void pressed(int x, int y);
